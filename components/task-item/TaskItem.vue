@@ -12,7 +12,7 @@ const emit = defineEmits<{
   (e: 'toggle', id: number): void;
 }>();
 
-const handleToggle = () => {
+const handleToggle = (): void => {
   if (!props.isLoading) {
     emit('toggle', props.task.id);
   }

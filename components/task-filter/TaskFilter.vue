@@ -19,7 +19,7 @@ const filters = computed<{label: string; value: TaskFilter; count: number}[]>(()
   {label: 'Pending', value: 'pending' as const, count: props.pendingCount}
 ]);
 
-const updateFilter = (filter: TaskFilter) => {
+const updateFilter = (filter: TaskFilter): void => {
   emit('update:filter', filter);
 };
 </script>

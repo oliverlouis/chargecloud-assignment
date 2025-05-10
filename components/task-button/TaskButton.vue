@@ -7,18 +7,18 @@ const props = defineProps<{
   onClick: () => void;
 }>();
 
-const buttonText = computed(() => {
+const buttonText = computed<string>(() => {
   if (props.isLoading) {
     return 'Updating...';
   }
   return props.isCompleted ? 'Mark as Pending' : 'Mark as Complete';
 });
 
-const dynamicButtonClasses = computed(() => {
+const dynamicButtonClasses = computed<Record<string, boolean>>(() => {
   return {
     'bg-yellow-500 hover:bg-yellow-600 text-white': props.isCompleted,
     'bg-green-500 hover:bg-green-600 text-white': !props.isCompleted,
-    'opacity-50 cursor-not-allowed': props.isLoading
+    'opacity-50 cursor-not-allowed': props.isLoading,
   };
 });
 </script>

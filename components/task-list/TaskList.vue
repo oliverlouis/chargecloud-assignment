@@ -22,7 +22,7 @@ const {
 
 useKeyboardNavigation(tasks, toggleTaskCompletion);
 
-const noTasksMessage = computed(() => {
+const noTasksMessage = computed<string>(() => {
   const currentFilter = filter.value;
   if (currentFilter === 'completed') {
     return 'No completed tasks found.';
@@ -30,7 +30,7 @@ const noTasksMessage = computed(() => {
   return 'No pending tasks found.';
 });
 
-const shouldShowAllTasksButton = computed(() => {
+const shouldShowAllTasksButton = computed<boolean>(() => {
   return filter.value !== 'all' && totalCount.value > 0;
 });
 

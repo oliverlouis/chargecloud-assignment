@@ -1,4 +1,4 @@
-export default defineEventHandler(() => {
+export default defineEventHandler((): Task[] => {
   return [
     {id: 101, title: 'Inspect Station #A1', description: 'Check cables and connectors', completed: false},
     {id: 102, title: 'Update Firmware on Station #B3', description: 'Apply latest security patch', completed: true},

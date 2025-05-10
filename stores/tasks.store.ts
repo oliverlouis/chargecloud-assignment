@@ -32,7 +32,7 @@ export const useTaskStore = defineStore('tasks', {
   },
 
   actions: {
-    async fetchTasks() {
+    async fetchTasks(): void {
       this.loading = true;
       this.error = null;
 
@@ -58,8 +58,10 @@ export const useTaskStore = defineStore('tasks', {
       }
     },
 
-    async toggleTaskCompletion(taskId: number) {
-      if (this.loadingTaskIds.has(taskId)) return;
+    async toggleTaskCompletion(taskId: number): void {
+      if (this.loadingTaskIds.has(taskId)) {
+        return;
+      }
 
       this.loadingTaskIds.set(taskId, true);
 
@@ -80,7 +82,7 @@ export const useTaskStore = defineStore('tasks', {
       }
     },
 
-    clearError() {
+    clearError(): void {
       this.error = null;
     }
   },
