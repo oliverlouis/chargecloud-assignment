@@ -1,4 +1,6 @@
 import {defineStore} from 'pinia';
+// Remove useFetch import as we'll use native fetch
+// import { useFetch } from '#app';
 
 export interface Task {
   id: number;
@@ -35,15 +37,19 @@ export const useTaskStore = defineStore('tasks', {
       this.error = null;
 
       try {
-        await new Promise(resolve => setTimeout(resolve, 500));
+        const response = await fetch('/api/mock-tasks', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
 
-        this.tasks = [
-          {id: 101, title: 'Inspect Station #A1', description: 'Check cables and connectors', completed: false},
-          {id: 102, title: 'Update Firmware on Station #B3', description: 'Apply latest security patch', completed: true},
-          {id: 103, title: 'Clean Charging Ports at Station #C5', description: 'Remove debris and dust', completed: false},
-          {id: 104, title: 'Verify Network Connectivity for Station #D2', description: 'Ensure stable internet connection', completed: false},
-          {id: 105, title: 'Replace Broken Screen on Station #E4', description: 'Order and install new display', completed: true},
-        ];
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        this.tasks = data ?? [];
       } catch (err) {
         this.error = err as Error;
         console.error('Failed to fetch tasks:', err);
