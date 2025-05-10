@@ -11,7 +11,7 @@ interface TaskState {
   tasks: Task[];
   loading: boolean;
   error: Error | null;
-  toggleState: Record<number, boolean>;
+  loadingTaskIds: Map<number, boolean>;
 }
 
 export const useTaskStore = defineStore('tasks', {
@@ -19,14 +19,14 @@ export const useTaskStore = defineStore('tasks', {
     tasks: [],
     loading: false,
     error: null,
-    toggleState: {},
+    loadingTaskIds: new Map(),
   }),
 
   getters: {
     completedTasks: (state) => state.tasks.filter(task => task.completed),
     pendingTasks: (state) => state.tasks.filter(task => !task.completed),
     getTaskById: (state) => (id: number) => state.tasks.find(task => task.id === id),
-    isTaskLoading: (state) => (id: number) => !!state.toggleState[id],
+    isTaskLoading: (state) => (id: number) => state.loadingTaskIds.has(id),
   },
 
   actions: {
@@ -53,9 +53,9 @@ export const useTaskStore = defineStore('tasks', {
     },
 
     async toggleTaskCompletion(taskId: number) {
-      if (this.toggleState[taskId]) return;
+      if (this.loadingTaskIds.has(taskId)) return;
 
-      this.toggleState[taskId] = true;
+      this.loadingTaskIds.set(taskId, true);
 
       try {
         await new Promise(resolve => setTimeout(resolve, 300));
@@ -70,7 +70,7 @@ export const useTaskStore = defineStore('tasks', {
         this.error = err as Error;
         console.error(`Failed to toggle task ${taskId}:`, err);
       } finally {
-        this.toggleState[taskId] = false;
+        this.loadingTaskIds.delete(taskId);
       }
     },
 
