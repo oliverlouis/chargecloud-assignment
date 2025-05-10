@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 
-interface Task {
+export interface Task {
   id: number;
   title: string;
   description: string;
@@ -11,6 +11,7 @@ interface TaskState {
   tasks: Task[];
   loading: boolean;
   error: Error | null;
+  toggleState: Record<number, boolean>;
 }
 
 export const useTaskStore = defineStore('tasks', {
@@ -18,43 +19,63 @@ export const useTaskStore = defineStore('tasks', {
     tasks: [],
     loading: false,
     error: null,
+    toggleState: {},
   }),
 
-  getters: {},
+  getters: {
+    completedTasks: (state) => state.tasks.filter(task => task.completed),
+    pendingTasks: (state) => state.tasks.filter(task => !task.completed),
+    getTaskById: (state) => (id: number) => state.tasks.find(task => task.id === id),
+    isTaskLoading: (state) => (id: number) => !!state.toggleState[id],
+  },
 
   actions: {
     async fetchTasks() {
       this.loading = true;
       this.error = null;
+
       try {
-        await new Promise(resolve => setTimeout(resolve, 50ob));
-        const mockTasks: Task[] = [
-          { id: 1, title: 'Buy groceries', description: 'Milk, Bread, Cheese', completed: false },
-          { id: 2, title: 'Walk the dog', description: 'Morning walk', completed: true },
-          { id: 3, title: 'Read a book', description: 'Finish Chapter 5', completed: false },
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        this.tasks = [
+          {id: 101, title: 'Inspect Station #A1', description: 'Check cables and connectors', completed: false},
+          {id: 102, title: 'Update Firmware on Station #B3', description: 'Apply latest security patch', completed: true},
+          {id: 103, title: 'Clean Charging Ports at Station #C5', description: 'Remove debris and dust', completed: false},
+          {id: 104, title: 'Verify Network Connectivity for Station #D2', description: 'Ensure stable internet connection', completed: false},
+          {id: 105, title: 'Replace Broken Screen on Station #E4', description: 'Order and install new display', completed: true},
         ];
-        this.tasks = mockTasks;
       } catch (err) {
         this.error = err as Error;
         console.error('Failed to fetch tasks:', err);
-        throw err; 
       } finally {
         this.loading = false;
       }
     },
 
     async toggleTaskCompletion(taskId: number) {
+      if (this.toggleState[taskId]) return;
+
+      this.toggleState[taskId] = true;
+
       try {
         await new Promise(resolve => setTimeout(resolve, 300));
 
         const taskIndex = this.tasks.findIndex(task => task.id === taskId);
         if (taskIndex !== -1) {
           this.tasks[taskIndex].completed = !this.tasks[taskIndex].completed;
+        } else {
+          throw new Error(`Task with ID ${taskId} not found`);
         }
       } catch (err) {
+        this.error = err as Error;
         console.error(`Failed to toggle task ${taskId}:`, err);
-        throw err;
+      } finally {
+        this.toggleState[taskId] = false;
       }
     },
+
+    clearError() {
+      this.error = null;
+    }
   },
 });
