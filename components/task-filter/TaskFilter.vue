@@ -30,7 +30,7 @@ const updateFilter = (filter: TaskFilter) => {
         v-for="filter in filters"
         :key="filter.value"
         @click="() => updateFilter(filter.value)"
-        class="px-3 py-1 text-sm rounded-full transition-colors"
+        class="px-3 py-1 text-sm rounded-full transition-colors flex items-center"
         :class="[
         currentFilter === filter.value
           ? 'bg-blue-500 text-white'
@@ -38,7 +38,7 @@ const updateFilter = (filter: TaskFilter) => {
       ]"
         :aria-pressed="currentFilter === filter.value"
     >
-      {{ filter.label }}
+      <span>{{ filter.label }}</span>
       <span class="ml-1 px-1.5 py-0.5 text-xs rounded-full bg-white text-gray-600">
         {{ filter.count }}
       </span>

@@ -3,6 +3,7 @@ import { onMounted, computed } from 'vue';
 import TaskItem from '~/components/task-item/TaskItem.vue';
 import TaskFilter from '~/components/task-filter/TaskFilter.vue';
 import { useTasks } from '~/composables/useTasks';
+import { useKeyboardNavigation } from '~/composables/useKeyboardNavigation';
 
 const {
   tasks,
@@ -18,6 +19,8 @@ const {
   isTaskLoading,
   clearError
 } = useTasks();
+
+useKeyboardNavigation(tasks, toggleTaskCompletion);
 
 const noTasksMessage = computed(() => {
   const currentFilter = filter.value;
@@ -73,11 +76,13 @@ onMounted(async () => {
 
       <ul v-if="tasks.length" class="space-y-3" aria-label="Task list">
         <TaskItem
-          v-for="task in tasks"
+          v-for="(task, index) in tasks"
           :key="task.id"
           :task="task"
           :is-loading="isTaskLoading(task.id)"
+          :data-task-index="index"
           @toggle="toggleTaskCompletion"
+          tabindex="0"
         />
       </ul>
 
