@@ -12,7 +12,7 @@ const emit = defineEmits<{
   (e: 'toggle', id: number): void;
 }>();
 
-const handleToggle = (): void => {
+const handleToggleTaskCompletion = (): void => {
   if (!props.isLoading) {
     emit('toggle', props.task.id);
   }
@@ -26,7 +26,7 @@ const handleToggle = (): void => {
   >
     <div class="flex items-center gap-3">
       <button
-          @click="handleToggle"
+          @click="handleToggleTaskCompletion"
           :disabled="isLoading"
           class="mt-1 flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full"
           :aria-label="task.completed ? 'Mark as pending' : 'Mark as complete'"
@@ -53,7 +53,7 @@ const handleToggle = (): void => {
     <TaskButton
       :isCompleted="task.completed"
       :isLoading="isLoading"
-      :onClick="handleToggle"
+      :onClick="handleToggleTaskCompletion"
     />
   </li>
 </template>
