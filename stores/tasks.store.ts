@@ -1,6 +1,4 @@
 import {defineStore} from 'pinia';
-// Remove useFetch import as we'll use native fetch
-// import { useFetch } from '#app';
 
 export interface Task {
   id: number;
@@ -32,24 +30,19 @@ export const useTaskStore = defineStore('tasks', {
   },
 
   actions: {
-    async fetchTasks(): void {
+    async fetchTasks(): Promise<void> {
       this.loading = true;
       this.error = null;
 
       try {
-        const response = await fetch('/api/mock-tasks', {
+        const response = await $fetch('/api/mock-tasks', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        this.tasks = data ?? [];
+        this.tasks = response ?? [];
       } catch (err) {
         this.error = err as Error;
         console.error('Failed to fetch tasks:', err);
@@ -58,7 +51,7 @@ export const useTaskStore = defineStore('tasks', {
       }
     },
 
-    async toggleTaskCompletion(taskId: number): void {
+    async toggleTaskCompletion(taskId: number): Promise<void> {
       if (this.loadingTaskIds.has(taskId)) {
         return;
       }
