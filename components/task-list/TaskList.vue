@@ -97,7 +97,7 @@ onMounted(async () => {
         <button
           v-if="shouldShowAllTasksButton"
           @click="setFilter('all')"
-          class="mt-3 inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md"
+          class="mt-3 inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-700 bg-blue-100 hover:bg-blue-100 rounded-md"
         >
           Show all tasks
         </button>
