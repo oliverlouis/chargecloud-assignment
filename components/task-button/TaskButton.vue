@@ -16,8 +16,8 @@ const buttonText = computed<string>(() => {
 
 const dynamicButtonClasses = computed<Record<string, boolean>>(() => {
   return {
-    'bg-yellow-500 hover:bg-yellow-600 text-white': props.isCompleted,
-    'bg-green-500 hover:bg-green-600 text-white': !props.isCompleted,
+    'bg-yellow-600 hover:bg-yellow-700 text-white': props.isCompleted,
+    'bg-green-700 hover:bg-green-800 text-white': !props.isCompleted,
     'opacity-50 cursor-not-allowed': props.isLoading,
   };
 });

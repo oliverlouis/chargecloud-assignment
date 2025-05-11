@@ -33,7 +33,7 @@ const updateFilter = (filter: TaskFilter): void => {
         class="px-3 py-1 text-sm rounded-full transition-colors flex items-center"
         :class="[
         currentFilter === filter.value
-          ? 'bg-blue-500 text-white'
+          ? 'bg-blue-700 text-white'
           : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
       ]"
         :aria-pressed="currentFilter === filter.value"
